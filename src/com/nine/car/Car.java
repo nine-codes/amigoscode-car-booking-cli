@@ -1,4 +1,20 @@
 package com.nine.car;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 public class Car {
+    public UUID id;
+    public String regNumber;
+    public BigDecimal rentalPricePerDay;
+    public Brand brand;
+    public boolean isElectric;
+
+    public Car(UUID id, String regNumber, BigDecimal rentalPricePerDay, Brand brand, boolean isElectric) {
+        this.id = id;
+        this.regNumber = regNumber;
+        this.rentalPricePerDay = rentalPricePerDay;
+        this.brand = brand;
+        this.isElectric = isElectric;
+    }
 }
