@@ -1,5 +1,6 @@
 package com.nine.user;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class UserDao {
@@ -7,8 +8,17 @@ public class UserDao {
 
     static {
         users = new User[]{
-                new User(UUID.fromString("8ca51d2b-aaaf-4bf2-834a-e02964e10fc3"), "James"),
-                new User(UUID.fromString("b10d126a-3608-4980-9f9c-aa179f5cebc3"), "Jamila")
+                new User(UUID.fromString("567fc5e9-e94c-4003-95c3-5c3b3b2f8d82"), "James"),
+                new User(UUID.fromString("8f942095-26ac-4a64-b67c-3229ed5df70f"), "John"),
+                new User(UUID.fromString("0b4adf9f-4349-47f8-bcff-48984b362435"), "Steve"),
+                new User(UUID.fromString("d6af29b2-9b79-4619-9788-d4fc5d773455"), "Michael")
         };
+    }
+
+    public User getUser(UUID id) {
+        return Arrays.stream(users)
+                .filter(user -> user.id.equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }
