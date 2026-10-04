@@ -27,14 +27,14 @@ public class CarBookingService {
         // - if not found, throw an exception or print an error
         User user = userDao.getUser(userId);
         if (user == null) {
-            throw new IllegalArgumentException("No user found with the id: " + user.id);
+            throw new IllegalArgumentException("No user found with the id: " + userId);
         }
 
         // 2. Look up the car by carId
         // - if not found, throw an exception or print an error
         Car car = carDao.getCar(carId);
         if (car == null) {
-            throw new IllegalArgumentException("No car found with the id: " + car.id);
+            throw new IllegalArgumentException("No car found with the id: " + carId);
         }
 
         // 3. Validate the dates:
@@ -54,7 +54,7 @@ public class CarBookingService {
         if (Arrays.stream(carBookings).anyMatch(carBooking -> carBooking.car.id.equals(carId))) {
             System.out.println("The car is not available");
             return null;
-        } else {
+        }
 
         // 6. Count the days with ChronoUnit.DAYS.between(startDate, endDate)
         long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate);
@@ -71,6 +71,5 @@ public class CarBookingService {
 
         // 10. Return the saved booking
         return carBooking;
-        }
     }
 }
