@@ -31,4 +31,8 @@ public class CarDao {
                 .orElse(null))
                 .rentalPricePerDay;
     }
+
+    public Car[] getCars() {
+        return cars;
+    }
 }

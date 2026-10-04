@@ -72,4 +72,10 @@ public class CarBookingService {
         // 10. Return the saved booking
         return carBooking;
     }
+
+    public void deleteBooking() {
+    }
+
+    public void getActiveCarBookings() {
+    }
 }

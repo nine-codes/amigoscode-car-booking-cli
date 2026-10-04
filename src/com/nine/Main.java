@@ -1,10 +1,24 @@
 package com.nine;
 
 import com.nine.booking.CarBookingService;
+import com.nine.car.CarService;
+import com.nine.user.UserService;
 
+import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
+    public static CarBookingService carBookingService;
+    public static CarService carService;
+    public static UserService userService;
+
+    public Main() {
+        this.carBookingService = new CarBookingService();
+        this.carService = new CarService();
+        this.userService = new UserService();
+    }
+
     static void main() {
         Scanner scanner = new Scanner(System.in);
 
@@ -19,10 +33,19 @@ public class Main {
                     "7 - View All Users\n" +
                     "8 - Exit\n"
             );
+
             String input = scanner.nextLine();
 
-            if (input.trim().equals("8")) {
-                break;
+            switch (input.trim()) {
+                case "1" -> carBookingService.bookCar(UUID.fromString(""), UUID.fromString(""), LocalDate.parse(""), LocalDate.parse(""));
+                case "2" -> carBookingService.deleteBooking();
+                case "3" -> carBookingService.getActiveCarBookings();
+                case "4" -> carBookingService.getActiveCarBookings();
+                case "5" -> carService.getAvailableCars();
+                case "6" -> carService.getAvailableElectricCars();
+                case "7" -> userService.getUsers();
+                case "8" -> System.out.println("Exiting");
+                default -> System.out.println("Not an option");
             }
 
             System.out.printf("You entered: %s%n", input);

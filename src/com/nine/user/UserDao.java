@@ -21,4 +21,8 @@ public class UserDao {
                 .findFirst()
                 .orElse(null);
     }
+
+    public User[] getUsers() {
+        return users;
+    }
 }
