@@ -2,7 +2,6 @@ package com.nine.car;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.UUID;
 
 public class CarDao {
@@ -25,11 +24,13 @@ public class CarDao {
     }
 
     public BigDecimal getRentalPricePerDay(UUID id) {
-        return Objects.requireNonNull(Arrays.stream(cars)
-                .filter(car -> car.id.equals(id))
-                .findFirst()
-                .orElse(null))
-                .rentalPricePerDay;
+        for (Car car : cars) {
+            if(car.id.equals(id)) {
+                return car.rentalPricePerDay;
+            }
+        }
+
+        return null;
     }
 
     public Car[] getCars() {

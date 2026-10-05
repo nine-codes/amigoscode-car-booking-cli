@@ -37,18 +37,35 @@ public class Main {
             String input = scanner.nextLine();
 
             switch (input.trim()) {
-                case "1" -> carBookingService.bookCar(UUID.fromString(""), UUID.fromString(""), LocalDate.parse(""), LocalDate.parse(""));
-                case "2" -> carBookingService.deleteBooking();
+                case "1" -> bookCarPrompt(scanner);
+                case "2" -> carBookingService.deleteBooking(null);
                 case "3" -> carBookingService.getActiveCarBookings();
                 case "4" -> carBookingService.getActiveCarBookings();
                 case "5" -> carService.getAvailableCars();
                 case "6" -> carService.getAvailableElectricCars();
                 case "7" -> userService.getUsers();
                 case "8" -> System.out.println("Exiting");
-                default -> System.out.println("Not an option");
+                default -> System.out.println("Invalid");
             }
 
             System.out.printf("You entered: %s%n", input);
         }
+    }
+
+
+    public static void bookCarPrompt(Scanner scanner) {
+        System.out.println("Enter user id: ");
+        String userId = scanner.nextLine();
+
+        System.out.println("Enter car id: ");
+        String carId = scanner.nextLine();
+
+        System.out.println("Enter start date: ");
+        String startDate = scanner.nextLine();
+
+        System.out.println("Enter end date: ");
+        String endDate = scanner.nextLine();
+
+        carBookingService.bookCar(UUID.fromString(userId), UUID.fromString(carId), LocalDate.parse(startDate), LocalDate.parse(endDate));
     }
 }

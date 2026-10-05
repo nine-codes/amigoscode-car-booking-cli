@@ -17,4 +17,24 @@ public class Car {
         this.brand = brand;
         this.isElectric = isElectric;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getRegNumber() {
+        return regNumber;
+    }
+
+    public BigDecimal getRentalPricePerDay() {
+        return rentalPricePerDay;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public boolean isElectric() {
+        return isElectric;
+    }
 }

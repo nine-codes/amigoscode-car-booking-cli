@@ -16,10 +16,13 @@ public class UserDao {
     }
 
     public User getUser(UUID id) {
-        return Arrays.stream(users)
-                .filter(user -> user.id.equals(id))
-                .findFirst()
-                .orElse(null);
+        for (User user : users) {
+            if(user.id.equals(id)) {
+                return user;
+            }
+        }
+
+        return null;
     }
 
     public User[] getUsers() {

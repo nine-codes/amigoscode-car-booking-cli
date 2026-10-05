@@ -64,7 +64,7 @@ public class CarBookingService {
 
         // 8. Build a CarBooking with a UUID, user, car, dates, price,
         // BookingStatus.ACTIVE and bookedAt = LocalDateTime.now()
-        CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, price);
+        CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, BookingStatus.ACTIVE, price);
 
         // 9. Save the booking through the DAO
         carBookingDao.saveBooking(carBooking);
@@ -73,9 +73,11 @@ public class CarBookingService {
         return carBooking;
     }
 
-    public void deleteBooking() {
+    public void deleteBooking(CarBooking carBooking) {
+        carBookingDao.deleteBooking(carBooking);
     }
 
     public void getActiveCarBookings() {
+        carBookingDao.getActiveCarBookings();
     }
 }

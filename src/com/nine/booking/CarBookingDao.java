@@ -1,20 +1,23 @@
 package com.nine.booking;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public class CarBookingDao {
     private static final CarBooking[] carBookings;
-    private int size = 0;
+    private static int size = 0;
 
     static {
-        carBookings = new CarBooking[4];
+        carBookings = new CarBooking[size];
     }
 
     public CarBooking[] getActiveCarBookings() {
-        return Arrays.stream(carBookings)
-                .filter(Objects::nonNull)
-                .toArray(CarBooking[]::new);
+        CarBooking[] activeCarBookings = new CarBooking[size];
+
+        for (CarBooking carBooking : carBookings) {
+            if(carBooking.status.equals(BookingStatus.ACTIVE)) {
+                activeCarBookings[0] = carBooking;
+            }
+        }
+
+        return activeCarBookings;
     }
 
     public void saveBooking(CarBooking booking) {
