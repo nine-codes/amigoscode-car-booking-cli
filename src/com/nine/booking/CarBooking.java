@@ -5,6 +5,7 @@ import com.nine.user.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CarBooking {
@@ -52,5 +53,30 @@ public class CarBooking {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "CarBooking{" +
+                "id=" + id +
+                ", user=" + user +
+                ", car=" + car +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", status=" + status +
+                ", price=" + price +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CarBooking booking = (CarBooking) o;
+        return Objects.equals(id, booking.id) && Objects.equals(user, booking.user) && Objects.equals(car, booking.car) && Objects.equals(startDate, booking.startDate) && Objects.equals(endDate, booking.endDate) && status == booking.status && Objects.equals(price, booking.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, car, startDate, endDate, status, price);
     }
 }
