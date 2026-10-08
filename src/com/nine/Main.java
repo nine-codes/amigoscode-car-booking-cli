@@ -1,23 +1,18 @@
 package com.nine;
 
 import com.nine.booking.CarBookingService;
+import com.nine.car.Car;
 import com.nine.car.CarService;
+import com.nine.user.User;
 import com.nine.user.UserService;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
-    public static CarBookingService carBookingService;
-    public static CarService carService;
-    public static UserService userService;
-
-    public Main() {
-        this.carBookingService = new CarBookingService();
-        this.carService = new CarService();
-        this.userService = new UserService();
-    }
+    public static CarBookingService carBookingService  = new CarBookingService();
+    public static CarService carService  = new CarService();
+    public static UserService userService  = new UserService();
 
     static void main() {
         Scanner scanner = new Scanner(System.in);
@@ -54,11 +49,11 @@ public class Main {
 
 
     public static void bookCarPrompt(Scanner scanner) {
-        System.out.println("Enter user id: ");
-        String userId = scanner.nextLine();
+        System.out.println("Select user: ");
+        User selectedUser = getSelectedUser(scanner);
 
-        System.out.println("Enter car id: ");
-        String carId = scanner.nextLine();
+        System.out.println("Select car: ");
+        Car selectedCar = getSelectedCar(scanner);
 
         System.out.println("Enter start date: ");
         String startDate = scanner.nextLine();
@@ -66,6 +61,26 @@ public class Main {
         System.out.println("Enter end date: ");
         String endDate = scanner.nextLine();
 
-        carBookingService.bookCar(UUID.fromString(userId), UUID.fromString(carId), LocalDate.parse(startDate), LocalDate.parse(endDate));
+        carBookingService.bookCar(selectedUser.id, selectedCar.id, LocalDate.parse(startDate), LocalDate.parse(endDate));
+    }
+
+    private static Car getSelectedCar(Scanner scanner) {
+        for (int i = 0; i < carService.getAvailableCars().length; i++) {
+            System.out.println(i + 1 + " - " + carService.getAvailableCars()[i].brand);
+        }
+
+        String carChoice = scanner.nextLine();
+
+        return carService.getAvailableElectricCars()[Integer.parseInt(carChoice) - 1];
+    }
+
+    private static User getSelectedUser(Scanner scanner) {
+        for (int i = 0; i < userService.getUsers().length; i++) {
+            System.out.println(i + 1 + " - " + userService.getUsers()[i].name);
+        }
+
+        String userChoice = scanner.nextLine();
+
+        return userService.getUsers()[Integer.parseInt(userChoice) - 1];
     }
 }

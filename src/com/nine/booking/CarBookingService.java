@@ -77,7 +77,7 @@ public class CarBookingService {
         carBookingDao.deleteBooking(carBooking);
     }
 
-    public void getActiveCarBookings() {
-        carBookingDao.getActiveCarBookings();
+    public CarBooking[] getActiveCarBookings() {
+        return carBookingDao.getActiveCarBookings();
     }
 }

@@ -1,5 +1,7 @@
 package com.nine.user;
 
+import java.util.UUID;
+
 public class UserService {
     public UserDao userDao;
 
@@ -9,5 +11,9 @@ public class UserService {
 
     public User[] getUsers() {
         return userDao.getUsers();
+    }
+
+    public User getUser(UUID id) {
+        return userDao.getUser(id);
     }
 }

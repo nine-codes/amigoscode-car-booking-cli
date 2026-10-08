@@ -1,41 +1,30 @@
 package com.nine.booking;
 
-public class CarBookingDao {
-    private static final CarBooking[] carBookings;
-    private static int size = 0;
+import java.util.Arrays;
 
-    static {
-        carBookings = new CarBooking[size];
-    }
+public class CarBookingDao {
+    private static CarBooking[] carBookings = new CarBooking[0];
 
     public CarBooking[] getActiveCarBookings() {
-        CarBooking[] activeCarBookings = new CarBooking[size];
+        CarBooking[] activeCarBookings = new CarBooking[carBookings.length];
 
         for (CarBooking carBooking : carBookings) {
-            if(carBooking.status.equals(BookingStatus.ACTIVE)) {
+            if (carBooking.status.equals(BookingStatus.ACTIVE)) {
                 activeCarBookings[0] = carBooking;
             }
         }
 
+        System.out.println(Arrays.toString(activeCarBookings));
         return activeCarBookings;
     }
 
     public void saveBooking(CarBooking booking) {
-        carBookings[size] = booking;
-        size++;
+        CarBooking[] newBookings = new CarBooking[carBookings.length + 1];
+        newBookings[carBookings.length] = booking;
+        carBookings = newBookings;
     }
 
     public void deleteBooking(CarBooking booking) {
-        for (int i = 0; i < size; i++) {
-            if(booking.id.equals(carBookings[i].id)) {
-                carBookings[i] = null;
-                size--;
-                break;
-            }
-        }
-    }
-
-    public int getSize() {
-        return size;
+        System.out.println("Delete " + booking);
     }
 }
