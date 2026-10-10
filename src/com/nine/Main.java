@@ -37,7 +37,7 @@ public class Main {
                 case "1" -> bookCarPrompt(scanner);
                 case "2" -> deleteCarPrompt(scanner);
                 case "3" -> getUserActiveBookingsPrompt(scanner);
-                case "4" -> carBookingService.getActiveCarBookings();
+                case "4" -> getAllBookings();
                 case "5" -> carService.getAvailableCars();
                 case "6" -> carService.getAvailableElectricCars();
                 case "7" -> userService.getUsers();
@@ -47,6 +47,10 @@ public class Main {
 
             System.out.printf("You entered: %s%n", input);
         }
+    }
+
+    private static void getAllBookings() {
+        System.out.println(Arrays.toString(carBookingService.getActiveCarBookings()));
     }
 
     private static void getUserActiveBookingsPrompt(Scanner scanner) {
@@ -97,10 +101,15 @@ public class Main {
 
         CarBooking[] activeCarBookings = carBookingService.getActiveCarBookings();
 
+        if (activeCarBookings.length == 0) {
+            System.out.println("No bookings to delete!");
+            return;
+        }
+
         for (int i = 0; i < activeCarBookings.length; i++) {
             System.out.printf(
                     "%d - %s %s %s/%s %n",
-                    i,
+                    i + 1,
                     activeCarBookings[i].car.brand,
                     activeCarBookings[i].user.name,
                     activeCarBookings[i].startDate,
@@ -108,8 +117,17 @@ public class Main {
             );
         }
 
-        String userChoice = scanner.nextLine();
-
-        carBookingService.deleteBooking(carBookingService.getActiveCarBookings()[Integer.parseInt(userChoice) - 1]);
+        try {
+            String userChoice = scanner.nextLine();
+            if (Integer.parseInt(userChoice) > 0 && Integer.parseInt(userChoice) <= activeCarBookings.length) {
+                carBookingService.deleteBooking(carBookingService.getActiveCarBookings()[Integer.parseInt(userChoice) - 1]);
+            } else {
+                System.out.println("No booking with that index.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid choice");
+        }
     }
+
+
 }
