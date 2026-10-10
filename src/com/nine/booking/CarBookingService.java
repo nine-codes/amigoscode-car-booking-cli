@@ -47,7 +47,7 @@ public class CarBookingService {
         }
 
         // 4. Get all current bookings
-        CarBooking[] carBookings = carBookingDao.getActiveCarBookings();
+        CarBooking[] carBookings = carBookingDao.getCarBookings();
 
         // 5. Check whether an active booking already holds this car
         // - if it does, reject: the car is not available
@@ -78,6 +78,23 @@ public class CarBookingService {
     }
 
     public CarBooking[] getActiveCarBookings() {
-        return carBookingDao.getActiveCarBookings();
+        return carBookingDao.getCarBookings();
+    }
+
+    public CarBooking[] getUserCarBookings(UUID id) {
+        if(id.equals(null)) {
+            throw new NullPointerException("getUserCarBookings: Id is null");
+        }
+
+        int size = 1;
+        CarBooking[] userBookings = new CarBooking[size];
+        for (int i = 0; i < carBookingDao.getCarBookings().length; i++) {
+            if (carBookingDao.getCarBookings()[i].user.id.equals(id)) {
+                userBookings[size - 1] = carBookingDao.getCarBookings()[i];
+                size++;
+            }
+        }
+
+        return null;
     }
 }

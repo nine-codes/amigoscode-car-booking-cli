@@ -1,5 +1,6 @@
 package com.nine;
 
+import com.nine.booking.CarBooking;
 import com.nine.booking.CarBookingService;
 import com.nine.car.Car;
 import com.nine.car.CarService;
@@ -33,8 +34,8 @@ public class Main {
 
             switch (input.trim()) {
                 case "1" -> bookCarPrompt(scanner);
-                case "2" -> carBookingService.deleteBooking(null);
-                case "3" -> carBookingService.getActiveCarBookings();
+                case "2" -> deleteCarPrompt(scanner);
+                case "3" -> carBookingService.getUserCarBookings(null);
                 case "4" -> carBookingService.getActiveCarBookings();
                 case "5" -> carService.getAvailableCars();
                 case "6" -> carService.getAvailableElectricCars();
@@ -82,5 +83,26 @@ public class Main {
         String userChoice = scanner.nextLine();
 
         return userService.getUsers()[Integer.parseInt(userChoice) - 1];
+    }
+
+    public static void deleteCarPrompt(Scanner scanner) {
+        System.out.println("Select booking: ");
+
+        CarBooking[] activeCarBookings = carBookingService.getActiveCarBookings();
+
+        for (int i = 0; i < activeCarBookings.length; i++) {
+            System.out.printf(
+                    "%d - %s %s %s/%s %n",
+                    i,
+                    activeCarBookings[i].car.brand,
+                    activeCarBookings[i].user.name,
+                    activeCarBookings[i].startDate,
+                    activeCarBookings[i].endDate
+            );
+        }
+
+        String userChoice = scanner.nextLine();
+
+        carBookingService.deleteBooking(carBookingService.getActiveCarBookings()[Integer.parseInt(userChoice) - 1]);
     }
 }
