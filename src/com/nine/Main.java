@@ -8,6 +8,7 @@ import com.nine.user.User;
 import com.nine.user.UserService;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -35,7 +36,7 @@ public class Main {
             switch (input.trim()) {
                 case "1" -> bookCarPrompt(scanner);
                 case "2" -> deleteCarPrompt(scanner);
-                case "3" -> carBookingService.getUserCarBookings(null);
+                case "3" -> getUserActiveBookingsPrompt(scanner);
                 case "4" -> carBookingService.getActiveCarBookings();
                 case "5" -> carService.getAvailableCars();
                 case "6" -> carService.getAvailableElectricCars();
@@ -46,6 +47,12 @@ public class Main {
 
             System.out.printf("You entered: %s%n", input);
         }
+    }
+
+    private static void getUserActiveBookingsPrompt(Scanner scanner) {
+        User selectedUser = getSelectedUser(scanner);
+
+        System.out.println(Arrays.toString(carBookingService.getUserCarBookings(selectedUser.id)));
     }
 
 

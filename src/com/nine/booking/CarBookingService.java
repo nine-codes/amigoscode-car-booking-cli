@@ -82,19 +82,26 @@ public class CarBookingService {
     }
 
     public CarBooking[] getUserCarBookings(UUID id) {
-        if(id.equals(null)) {
+        if(id == null) {
             throw new NullPointerException("getUserCarBookings: Id is null");
         }
 
-        int size = 1;
-        CarBooking[] userBookings = new CarBooking[size];
+        int size = 0;
         for (int i = 0; i < carBookingDao.getCarBookings().length; i++) {
             if (carBookingDao.getCarBookings()[i].user.id.equals(id)) {
-                userBookings[size - 1] = carBookingDao.getCarBookings()[i];
                 size++;
             }
         }
 
-        return null;
+        CarBooking[] userBookings = new CarBooking[size];
+        int index = 0;
+        for (int i = 0; i < carBookingDao.getCarBookings().length; i++) {
+            if (carBookingDao.getCarBookings()[i].user.id.equals(id)) {
+                userBookings[index] = carBookingDao.getCarBookings()[i];
+                index++;
+            }
+        }
+
+        return userBookings;
     }
 }

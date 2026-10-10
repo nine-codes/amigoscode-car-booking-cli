@@ -21,6 +21,11 @@ public class CarBookingDao {
 
     public void saveBooking(CarBooking booking) {
         CarBooking[] newBookings = new CarBooking[carBookings.length + 1];
+
+        for (int i = 0; i < carBookings.length; i++) {
+            newBookings[i] = carBookings[i];
+        }
+
         newBookings[carBookings.length] = booking;
         carBookings = newBookings;
     }
