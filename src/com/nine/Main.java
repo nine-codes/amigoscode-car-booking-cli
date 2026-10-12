@@ -60,7 +60,7 @@ public class Main {
     }
 
     private static void getAllBookings() {
-        System.out.println(Arrays.toString(carBookingService.getActiveCarBookings()));
+        System.out.println(Arrays.toString(carBookingService.getAllCarBookings()));
     }
 
     private static void getUserActiveBookingsPrompt(Scanner scanner) {
@@ -87,29 +87,33 @@ public class Main {
     }
 
     private static Car getSelectedCar(Scanner scanner) {
-        for (int i = 0; i < carBookingService.getAvailableCars().length; i++) {
-            System.out.println(i + 1 + " - " + carBookingService.getAvailableCars()[i].brand);
+        Car[] availableCars = carBookingService.getAvailableCars();
+
+        for (int i = 0; i < availableCars.length; i++) {
+            System.out.println(i + 1 + " - " + availableCars[i].brand);
         }
 
         String carChoice = scanner.nextLine();
 
-        return carBookingService.getAvailableCars()[Integer.parseInt(carChoice) - 1];
+        return availableCars[Integer.parseInt(carChoice) - 1];
     }
 
     private static User getSelectedUser(Scanner scanner) {
-        for (int i = 0; i < userService.getUsers().length; i++) {
-            System.out.println(i + 1 + " - " + userService.getUsers()[i].name);
+        User[] users = userService.getUsers();
+
+        for (int i = 0; i < users.length; i++) {
+            System.out.println(i + 1 + " - " + users[i].name);
         }
 
         String userChoice = scanner.nextLine();
 
-        return userService.getUsers()[Integer.parseInt(userChoice) - 1];
+        return users[Integer.parseInt(userChoice) - 1];
     }
 
     public static void deleteCarPrompt(Scanner scanner) {
         System.out.println("Select booking: ");
 
-        CarBooking[] activeCarBookings = carBookingService.getActiveCarBookings();
+        CarBooking[] activeCarBookings = carBookingService.getAllCarBookings();
 
         if (activeCarBookings.length == 0) {
             System.out.println("No bookings to delete!");
@@ -130,7 +134,7 @@ public class Main {
         try {
             String userChoice = scanner.nextLine();
             if (Integer.parseInt(userChoice) > 0 && Integer.parseInt(userChoice) <= activeCarBookings.length) {
-                carBookingService.deleteBooking(carBookingService.getActiveCarBookings()[Integer.parseInt(userChoice) - 1]);
+                carBookingService.deleteBooking(activeCarBookings[Integer.parseInt(userChoice) - 1]);
             } else {
                 System.out.println("No booking with that index.");
             }
@@ -138,6 +142,4 @@ public class Main {
             System.out.println("Invalid choice");
         }
     }
-
-
 }

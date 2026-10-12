@@ -8,7 +8,6 @@ import com.nine.user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -51,7 +50,15 @@ public class CarBookingService {
 
         // 5. Check whether an active booking already holds this car
         // - if it does, reject: the car is not available
-        if (Arrays.stream(carBookings).anyMatch(carBooking -> carBooking.car.id.equals(carId))) {
+        boolean booked = false;
+        for (CarBooking carBooking : carBookings) {
+            if (carBooking.car.id.equals(carId)) {
+                booked = true;
+                break;
+            }
+        }
+
+        if (booked) {
             System.out.println("The car is not available");
             return null;
         }
@@ -60,7 +67,7 @@ public class CarBookingService {
         long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate);
 
         // 7. Calculate the price: car.getRentalPricePerDay() x numberOfDays
-        BigDecimal price = car.rentalPricePerDay.multiply(new BigDecimal(numberOfDays));
+        BigDecimal price = car.getRentalPricePerDay().multiply(new BigDecimal(numberOfDays));
 
         // 8. Build a CarBooking with a UUID, user, car, dates, price,
         // BookingStatus.ACTIVE and bookedAt = LocalDateTime.now()
@@ -77,7 +84,7 @@ public class CarBookingService {
         carBookingDao.deleteBooking(carBooking);
     }
 
-    public CarBooking[] getActiveCarBookings() {
+    public CarBooking[] getAllCarBookings() {
         return carBookingDao.getCarBookings();
     }
 
@@ -86,18 +93,20 @@ public class CarBookingService {
             throw new NullPointerException("getUserCarBookings: Id is null");
         }
 
+        CarBooking[] allBookings = carBookingDao.getCarBookings();
+
         int size = 0;
-        for (int i = 0; i < carBookingDao.getCarBookings().length; i++) {
-            if (carBookingDao.getCarBookings()[i].user.id.equals(id)) {
+        for (int i = 0; i < allBookings.length; i++) {
+            if (allBookings[i].user.id.equals(id)) {
                 size++;
             }
         }
 
         CarBooking[] userBookings = new CarBooking[size];
         int index = 0;
-        for (int i = 0; i < carBookingDao.getCarBookings().length; i++) {
-            if (carBookingDao.getCarBookings()[i].user.id.equals(id)) {
-                userBookings[index] = carBookingDao.getCarBookings()[i];
+        for (int i = 0; i < allBookings.length; i++) {
+            if (allBookings[i].user.id.equals(id)) {
+                userBookings[index] = allBookings[i];
                 index++;
             }
         }

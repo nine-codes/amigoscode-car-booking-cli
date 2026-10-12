@@ -21,7 +21,7 @@ public class CarService {
         int size = 0;
 
         for (Car car : carDao.getCars()) {
-            if (car.getIsElectric()) {
+            if (car.isElectric()) {
                 size++;
             }
         }
@@ -30,7 +30,7 @@ public class CarService {
         int index = 0;
 
         for (Car car : carDao.getCars()) {
-            if (car.getIsElectric()) {
+            if (car.isElectric()) {
                 electricCars[index] = car;
                 index++;
             }
