@@ -104,4 +104,44 @@ public class CarBookingService {
 
         return userBookings;
     }
+
+    public Car[] getAvailableCars() {
+        int size = 0;
+
+        for (Car car : carDao.getCars()) {
+            boolean booked = false;
+
+            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
+                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
+                    booked = true;
+                    break;
+                }
+            }
+
+            if (!booked) {
+                size++;
+            }
+        }
+
+        Car[] availableCars = new Car[size];
+        int index = 0;
+
+        for (Car car : carDao.getCars()) {
+            boolean booked = false;
+
+            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
+                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
+                    booked = true;
+                    break;
+                }
+            }
+
+            if (!booked) {
+                availableCars[index] = car;
+                index++;
+            }
+        }
+
+        return  availableCars;
+    }
 }

@@ -38,15 +38,23 @@ public class Main {
                 case "2" -> deleteCarPrompt(scanner);
                 case "3" -> getUserActiveBookingsPrompt(scanner);
                 case "4" -> getAllBookings();
-                case "5" -> carService.getAvailableCars();
+                case "5" -> getAvailableCars();
                 case "6" -> carService.getAvailableElectricCars();
-                case "7" -> userService.getUsers();
+                case "7" -> getAllUsers();
                 case "8" -> System.out.println("Exiting");
                 default -> System.out.println("Invalid");
             }
 
             System.out.printf("You entered: %s%n", input);
         }
+    }
+
+    private static void getAvailableCars() {
+        System.out.println(Arrays.toString(carBookingService.getAvailableCars()));
+    }
+
+    private static void getAllUsers() {
+        System.out.println(Arrays.toString(userService.getUsers()));
     }
 
     private static void getAllBookings() {
