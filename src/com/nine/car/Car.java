@@ -35,7 +35,7 @@ public class Car {
         return brand;
     }
 
-    public boolean isElectric() {
+    public boolean getIsElectric() {
         return isElectric;
     }
 

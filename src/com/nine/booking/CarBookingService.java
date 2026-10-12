@@ -144,4 +144,44 @@ public class CarBookingService {
 
         return  availableCars;
     }
+
+    public Car[] getAvailableElectricCars() {
+        int size = 0;
+
+        for (Car car : carDao.getCars()) {
+            boolean booked = false;
+
+            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
+                if (carBooking.car.getId().equals(car.id) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
+                    booked = true;
+                    break;
+                }
+            }
+
+            if (!booked && car.getIsElectric()) {
+                size++;
+            }
+        }
+
+        Car[] availableElectricCars = new Car[size];
+        int index = 0;
+
+        for (Car car : carDao.getCars()) {
+            boolean booked = false;
+
+            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
+                if (carBooking.car.getId().equals(car.getId()) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
+                    booked = true;
+                    break;
+                }
+            }
+
+            if (!booked  && car.getIsElectric()) {
+                availableElectricCars[index] = car;
+                index++;
+            }
+        }
+
+        return  availableElectricCars;
+    }
 }

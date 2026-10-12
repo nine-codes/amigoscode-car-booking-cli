@@ -39,7 +39,7 @@ public class Main {
                 case "3" -> getUserActiveBookingsPrompt(scanner);
                 case "4" -> getAllBookings();
                 case "5" -> getAvailableCars();
-                case "6" -> carService.getAvailableElectricCars();
+                case "6" -> getAvailableElectricCars();
                 case "7" -> getAllUsers();
                 case "8" -> System.out.println("Exiting");
                 default -> System.out.println("Invalid");
@@ -47,6 +47,10 @@ public class Main {
 
             System.out.printf("You entered: %s%n", input);
         }
+    }
+
+    private static void getAvailableElectricCars() {
+        System.out.println(Arrays.toString(carBookingService.getAvailableElectricCars()));
     }
 
     private static void getAvailableCars() {
@@ -91,7 +95,7 @@ public class Main {
 
         String carChoice = scanner.nextLine();
 
-        return carService.getAvailableElectricCars()[Integer.parseInt(carChoice) - 1];
+        return carService.getAvailableCars()[Integer.parseInt(carChoice) - 1];
     }
 
     private static User getSelectedUser(Scanner scanner) {
