@@ -1,5 +1,7 @@
 package com.nine.car;
 
+import java.util.UUID;
+
 public class CarService {
     public CarDao carDao;
 
@@ -7,12 +9,33 @@ public class CarService {
         this.carDao = new CarDao();
     }
 
+    public Car getCar(UUID id) {
+        return carDao.getCar(id);
+    }
 
-    public Car[] getAvailableElectricCars() {
+    public Car[] getCars() {
         return carDao.getCars();
     }
 
-    public Car[] getAvailableCars() {
-        return carDao.getCars();
+    public Car[] getElectricCars() {
+        int size = 0;
+
+        for (Car car : carDao.getCars()) {
+            if (car.getIsElectric()) {
+                size++;
+            }
+        }
+
+        Car[] electricCars = new Car[size];
+        int index = 0;
+
+        for (Car car : carDao.getCars()) {
+            if (car.getIsElectric()) {
+                electricCars[index] = car;
+                index++;
+            }
+        }
+
+        return electricCars;
     }
 }

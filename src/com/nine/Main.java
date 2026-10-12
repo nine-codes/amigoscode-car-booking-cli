@@ -3,7 +3,6 @@ package com.nine;
 import com.nine.booking.CarBooking;
 import com.nine.booking.CarBookingService;
 import com.nine.car.Car;
-import com.nine.car.CarService;
 import com.nine.user.User;
 import com.nine.user.UserService;
 
@@ -13,7 +12,6 @@ import java.util.Scanner;
 
 public class Main {
     public static CarBookingService carBookingService  = new CarBookingService();
-    public static CarService carService  = new CarService();
     public static UserService userService  = new UserService();
 
     static void main() {
@@ -89,13 +87,13 @@ public class Main {
     }
 
     private static Car getSelectedCar(Scanner scanner) {
-        for (int i = 0; i < carService.getAvailableCars().length; i++) {
-            System.out.println(i + 1 + " - " + carService.getAvailableCars()[i].brand);
+        for (int i = 0; i < carBookingService.getAvailableCars().length; i++) {
+            System.out.println(i + 1 + " - " + carBookingService.getAvailableCars()[i].brand);
         }
 
         String carChoice = scanner.nextLine();
 
-        return carService.getAvailableCars()[Integer.parseInt(carChoice) - 1];
+        return carBookingService.getAvailableCars()[Integer.parseInt(carChoice) - 1];
     }
 
     private static User getSelectedUser(Scanner scanner) {

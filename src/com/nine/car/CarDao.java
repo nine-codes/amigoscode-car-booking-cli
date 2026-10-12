@@ -25,16 +25,6 @@ public class CarDao {
         return null;
     }
 
-    public BigDecimal getRentalPricePerDay(UUID id) {
-        for (Car car : cars) {
-            if (car.id.equals(id)) {
-                return car.rentalPricePerDay;
-            }
-        }
-
-        return null;
-    }
-
     public Car[] getCars() {
         return cars;
     }

@@ -1,9 +1,9 @@
 package com.nine.booking;
 
 import com.nine.car.Car;
-import com.nine.car.CarDao;
+import com.nine.car.CarService;
 import com.nine.user.User;
-import com.nine.user.UserDao;
+import com.nine.user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,26 +13,26 @@ import java.util.UUID;
 
 public class CarBookingService {
     public CarBookingDao carBookingDao;
-    public UserDao userDao;
-    public CarDao carDao;
+    public UserService userService;
+    public CarService carService;
 
     public CarBookingService() {
         this.carBookingDao = new CarBookingDao();
-        this.userDao = new UserDao();
-        this.carDao = new CarDao();
+        this.userService = new UserService();
+        this.carService = new CarService();
     }
 
     public CarBooking bookCar(UUID userId, UUID carId, LocalDate startDate, LocalDate endDate) {
         // 1. Look up the user by userId
         // - if not found, throw an exception or print an error
-        User user = userDao.getUser(userId);
+        User user = userService.getUser(userId);
         if (user == null) {
             throw new IllegalArgumentException("No user found with the id: " + userId);
         }
 
         // 2. Look up the car by carId
         // - if not found, throw an exception or print an error
-        Car car = carDao.getCar(carId);
+        Car car = carService.getCar(carId);
         if (car == null) {
             throw new IllegalArgumentException("No car found with the id: " + carId);
         }
@@ -106,82 +106,50 @@ public class CarBookingService {
     }
 
     public Car[] getAvailableCars() {
-        int size = 0;
-
-        for (Car car : carDao.getCars()) {
-            boolean booked = false;
-
-            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
-                    booked = true;
-                    break;
-                }
-            }
-
-            if (!booked) {
-                size++;
-            }
-        }
-
-        Car[] availableCars = new Car[size];
-        int index = 0;
-
-        for (Car car : carDao.getCars()) {
-            boolean booked = false;
-
-            for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
-                    booked = true;
-                    break;
-                }
-            }
-
-            if (!booked) {
-                availableCars[index] = car;
-                index++;
-            }
-        }
-
-        return  availableCars;
+        return getNotBookedCars(carService.getCars());
     }
 
     public Car[] getAvailableElectricCars() {
+        return getNotBookedCars(carService.getElectricCars());
+    }
+
+    private Car[] getNotBookedCars(Car[] cars) {
         int size = 0;
 
-        for (Car car : carDao.getCars()) {
+        for (Car car : cars) {
             boolean booked = false;
 
             for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.getId().equals(car.id) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
+                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
                     booked = true;
                     break;
                 }
             }
 
-            if (!booked && car.getIsElectric()) {
+            if (!booked) {
                 size++;
             }
         }
 
-        Car[] availableElectricCars = new Car[size];
+        Car[] notBookedCars = new Car[size];
         int index = 0;
 
-        for (Car car : carDao.getCars()) {
+        for (Car car : cars) {
             boolean booked = false;
 
             for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.getId().equals(car.getId()) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
+                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
                     booked = true;
                     break;
                 }
             }
 
-            if (!booked  && car.getIsElectric()) {
-                availableElectricCars[index] = car;
+            if (!booked) {
+                notBookedCars[index] = car;
                 index++;
             }
         }
 
-        return  availableElectricCars;
+        return notBookedCars;
     }
 }
