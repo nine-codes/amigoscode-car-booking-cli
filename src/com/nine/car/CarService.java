@@ -3,7 +3,7 @@ package com.nine.car;
 import java.util.UUID;
 
 public class CarService {
-    public CarDao carDao;
+    private CarDao carDao;
 
     public CarService() {
         this.carDao = new CarDao();

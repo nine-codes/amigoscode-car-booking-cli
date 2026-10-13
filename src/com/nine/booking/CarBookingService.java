@@ -11,9 +11,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class CarBookingService {
-    public CarBookingDao carBookingDao;
-    public UserService userService;
-    public CarService carService;
+    private CarBookingDao carBookingDao;
+    private UserService userService;
+    private CarService carService;
 
     public CarBookingService() {
         this.carBookingDao = new CarBookingDao();
@@ -23,14 +23,14 @@ public class CarBookingService {
 
     public CarBooking bookCar(UUID userId, UUID carId, LocalDate startDate, LocalDate endDate) {
         // 1. Look up the user by userId
-        // - if not found, throw an exception or print an error
+        // - if not found, throw an exception
         User user = userService.getUser(userId);
         if (user == null) {
             throw new IllegalArgumentException("No user found with the id: " + userId);
         }
 
         // 2. Look up the car by carId
-        // - if not found, throw an exception or print an error
+        // - if not found, throw an exception
         Car car = carService.getCar(carId);
         if (car == null) {
             throw new IllegalArgumentException("No car found with the id: " + carId);
@@ -39,9 +39,8 @@ public class CarBookingService {
         // 3. Validate the dates:
         // - startDate must not be in the past
         // - endDate must be after startDate
-        // - if invalid, throw IllegalArgumentException or print an error
         LocalDate now = LocalDate.now();
-        if (startDate.isBefore(now) || endDate.isBefore(startDate)) {
+        if (startDate.isBefore(now) || !endDate.isAfter(startDate)) {
             throw new IllegalArgumentException("Invalid dates");
         }
 
@@ -50,17 +49,10 @@ public class CarBookingService {
 
         // 5. Check whether an active booking already holds this car
         // - if it does, reject: the car is not available
-        boolean booked = false;
         for (CarBooking carBooking : carBookings) {
-            if (carBooking.car.id.equals(carId)) {
-                booked = true;
-                break;
+            if (carBooking.getCar().getId().equals(carId) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
+                throw new IllegalStateException("The car is not available");
             }
-        }
-
-        if (booked) {
-            System.out.println("The car is not available");
-            return null;
         }
 
         // 6. Count the days with ChronoUnit.DAYS.between(startDate, endDate)
@@ -69,8 +61,7 @@ public class CarBookingService {
         // 7. Calculate the price: car.getRentalPricePerDay() x numberOfDays
         BigDecimal price = car.getRentalPricePerDay().multiply(new BigDecimal(numberOfDays));
 
-        // 8. Build a CarBooking with a UUID, user, car, dates, price,
-        // BookingStatus.ACTIVE and bookedAt = LocalDateTime.now()
+        // 8. Build a CarBooking with a UUID, user, car, dates, price and BookingStatus.ACTIVE
         CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, BookingStatus.ACTIVE, price);
 
         // 9. Save the booking through the DAO
@@ -89,15 +80,15 @@ public class CarBookingService {
     }
 
     public CarBooking[] getUserCarBookings(UUID id) {
-        if(id == null) {
-            throw new NullPointerException("getUserCarBookings: Id is null");
+        if (id == null) {
+            throw new IllegalArgumentException("getUserCarBookings: Id is null");
         }
 
         CarBooking[] allBookings = carBookingDao.getCarBookings();
 
         int size = 0;
         for (int i = 0; i < allBookings.length; i++) {
-            if (allBookings[i].user.id.equals(id)) {
+            if (allBookings[i].getUser().getId().equals(id)) {
                 size++;
             }
         }
@@ -105,7 +96,7 @@ public class CarBookingService {
         CarBooking[] userBookings = new CarBooking[size];
         int index = 0;
         for (int i = 0; i < allBookings.length; i++) {
-            if (allBookings[i].user.id.equals(id)) {
+            if (allBookings[i].getUser().getId().equals(id)) {
                 userBookings[index] = allBookings[i];
                 index++;
             }
@@ -129,7 +120,7 @@ public class CarBookingService {
             boolean booked = false;
 
             for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
+                if (carBooking.getCar().getId().equals(car.getId()) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
                     booked = true;
                     break;
                 }
@@ -147,7 +138,7 @@ public class CarBookingService {
             boolean booked = false;
 
             for (CarBooking carBooking : carBookingDao.getCarBookings()) {
-                if (carBooking.car.id.equals(car.id) && carBooking.status.equals(BookingStatus.ACTIVE)) {
+                if (carBooking.getCar().getId().equals(car.getId()) && carBooking.getStatus().equals(BookingStatus.ACTIVE)) {
                     booked = true;
                     break;
                 }

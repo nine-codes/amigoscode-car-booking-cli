@@ -16,7 +16,7 @@ public class UserDao {
 
     public User getUser(UUID id) {
         for (User user : users) {
-            if(user.id.equals(id)) {
+            if (user.getId().equals(id)) {
                 return user;
             }
         }

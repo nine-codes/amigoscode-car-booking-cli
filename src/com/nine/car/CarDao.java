@@ -17,11 +17,11 @@ public class CarDao {
 
     public Car getCar(UUID id) {
         for (Car car : cars) {
-            if (car.id.equals(id)) {
+            if (car.getId().equals(id)) {
                 return car;
             }
         }
-        
+
         return null;
     }
 

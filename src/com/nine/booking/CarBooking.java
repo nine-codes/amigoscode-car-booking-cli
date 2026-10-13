@@ -9,13 +9,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class CarBooking {
-    public UUID id;
-    public User user;
-    public Car car;
-    public LocalDate startDate;
-    public LocalDate endDate;
-    public BookingStatus status;
-    public BigDecimal price;
+    private UUID id;
+    private User user;
+    private Car car;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private BookingStatus status;
+    private BigDecimal price;
 
     public CarBooking(UUID id, User user, Car car, LocalDate startDate, LocalDate endDate, BookingStatus status, BigDecimal price) {
         this.id = id;

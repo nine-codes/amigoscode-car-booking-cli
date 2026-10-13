@@ -3,7 +3,7 @@ package com.nine.user;
 import java.util.UUID;
 
 public class UserService {
-    public UserDao userDao;
+    private UserDao userDao;
 
     public UserService() {
         this.userDao = new UserDao();

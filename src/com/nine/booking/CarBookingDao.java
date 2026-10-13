@@ -1,7 +1,7 @@
 package com.nine.booking;
 
 public class CarBookingDao {
-    private static CarBooking[] carBookings = new CarBooking[0];
+    private CarBooking[] carBookings = new CarBooking[0];
 
     public CarBooking[] getCarBookings() {
         return carBookings;
@@ -19,7 +19,18 @@ public class CarBookingDao {
     }
 
     public void deleteBooking(CarBooking booking) {
-        if (carBookings.length == 0 || booking == null) {
+        if (booking == null) {
+            return;
+        }
+
+        boolean found = false;
+        for (CarBooking carBooking : carBookings) {
+            if (booking.equals(carBooking)) {
+                found = true;
+            }
+        }
+
+        if (!found) {
             return;
         }
 

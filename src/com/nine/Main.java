@@ -6,13 +6,14 @@ import com.nine.car.Car;
 import com.nine.user.User;
 import com.nine.user.UserService;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-    public static CarBookingService carBookingService  = new CarBookingService();
-    public static UserService userService  = new UserService();
+    private static CarBookingService carBookingService = new CarBookingService();
+    private static UserService userService = new UserService();
 
     static void main() {
         Scanner scanner = new Scanner(System.in);
@@ -34,16 +35,17 @@ public class Main {
             switch (input.trim()) {
                 case "1" -> bookCarPrompt(scanner);
                 case "2" -> deleteCarPrompt(scanner);
-                case "3" -> getUserActiveBookingsPrompt(scanner);
+                case "3" -> getUserBookingsPrompt(scanner);
                 case "4" -> getAllBookings();
                 case "5" -> getAvailableCars();
                 case "6" -> getAvailableElectricCars();
                 case "7" -> getAllUsers();
-                case "8" -> System.out.println("Exiting");
+                case "8" -> {
+                    System.out.println("Exiting");
+                    return;
+                }
                 default -> System.out.println("Invalid");
             }
-
-            System.out.printf("You entered: %s%n", input);
         }
     }
 
@@ -63,34 +65,37 @@ public class Main {
         System.out.println(Arrays.toString(carBookingService.getAllCarBookings()));
     }
 
-    private static void getUserActiveBookingsPrompt(Scanner scanner) {
+    private static void getUserBookingsPrompt(Scanner scanner) {
         User selectedUser = getSelectedUser(scanner);
 
-        System.out.println(Arrays.toString(carBookingService.getUserCarBookings(selectedUser.id)));
+        System.out.println(Arrays.toString(carBookingService.getUserCarBookings(selectedUser.getId())));
     }
 
-
     public static void bookCarPrompt(Scanner scanner) {
-        System.out.println("Select user: ");
-        User selectedUser = getSelectedUser(scanner);
+        try {
+            System.out.println("Select user: ");
+            User selectedUser = getSelectedUser(scanner);
 
-        System.out.println("Select car: ");
-        Car selectedCar = getSelectedCar(scanner);
+            System.out.println("Select car: ");
+            Car selectedCar = getSelectedCar(scanner);
 
-        System.out.println("Enter start date: ");
-        String startDate = scanner.nextLine();
+            System.out.println("Enter start date: ");
+            String startDate = scanner.nextLine();
 
-        System.out.println("Enter end date: ");
-        String endDate = scanner.nextLine();
+            System.out.println("Enter end date: ");
+            String endDate = scanner.nextLine();
 
-        carBookingService.bookCar(selectedUser.id, selectedCar.id, LocalDate.parse(startDate), LocalDate.parse(endDate));
+            carBookingService.bookCar(selectedUser.getId(), selectedCar.getId(), LocalDate.parse(startDate), LocalDate.parse(endDate));
+        } catch (IllegalArgumentException | DateTimeException | IllegalStateException | ArrayIndexOutOfBoundsException e) {
+            System.out.println("Booking failed: " + e.getMessage());
+        }
     }
 
     private static Car getSelectedCar(Scanner scanner) {
         Car[] availableCars = carBookingService.getAvailableCars();
 
         for (int i = 0; i < availableCars.length; i++) {
-            System.out.println(i + 1 + " - " + availableCars[i].brand);
+            System.out.println(i + 1 + " - " + availableCars[i].getBrand());
         }
 
         String carChoice = scanner.nextLine();
@@ -102,7 +107,7 @@ public class Main {
         User[] users = userService.getUsers();
 
         for (int i = 0; i < users.length; i++) {
-            System.out.println(i + 1 + " - " + users[i].name);
+            System.out.println(i + 1 + " - " + users[i].getName());
         }
 
         String userChoice = scanner.nextLine();
@@ -124,10 +129,10 @@ public class Main {
             System.out.printf(
                     "%d - %s %s %s/%s %n",
                     i + 1,
-                    activeCarBookings[i].car.brand,
-                    activeCarBookings[i].user.name,
-                    activeCarBookings[i].startDate,
-                    activeCarBookings[i].endDate
+                    activeCarBookings[i].getCar().getBrand(),
+                    activeCarBookings[i].getUser().getName(),
+                    activeCarBookings[i].getStartDate(),
+                    activeCarBookings[i].getEndDate()
             );
         }
 
