@@ -7,6 +7,7 @@ import com.nine.user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class CarBookingService {
         BigDecimal price = car.getRentalPricePerDay().multiply(new BigDecimal(numberOfDays));
 
         // 8. Build a CarBooking with a UUID, user, car, dates, price and BookingStatus.ACTIVE
-        CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, BookingStatus.ACTIVE, price);
+        CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, BookingStatus.ACTIVE, price, LocalDateTime.now());
 
         // 9. Save the booking through the DAO
         carBookingDao.saveBooking(carBooking);

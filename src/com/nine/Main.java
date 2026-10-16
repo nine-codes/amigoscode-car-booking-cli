@@ -66,9 +66,13 @@ public class Main {
     }
 
     private static void getUserBookingsPrompt(Scanner scanner) {
-        User selectedUser = getSelectedUser(scanner);
+        try {
+            User selectedUser = getSelectedUser(scanner);
 
-        System.out.println(Arrays.toString(carBookingService.getUserCarBookings(selectedUser.getId())));
+            System.out.println(Arrays.toString(carBookingService.getUserCarBookings(selectedUser.getId())));
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            System.out.println("Invalid user selection: " + e.getMessage());
+        }
     }
 
     public static void bookCarPrompt(Scanner scanner) {
@@ -79,13 +83,14 @@ public class Main {
             System.out.println("Select car: ");
             Car selectedCar = getSelectedCar(scanner);
 
-            System.out.println("Enter start date: ");
+            System.out.println("Enter start date (yyyy-MM-dd): ");
             String startDate = scanner.nextLine();
 
-            System.out.println("Enter end date: ");
+            System.out.println("Enter end date (yyyy-MM-dd): ");
             String endDate = scanner.nextLine();
 
-            carBookingService.bookCar(selectedUser.getId(), selectedCar.getId(), LocalDate.parse(startDate), LocalDate.parse(endDate));
+            CarBooking booking = carBookingService.bookCar(selectedUser.getId(), selectedCar.getId(), LocalDate.parse(startDate), LocalDate.parse(endDate));
+            System.out.println("Booking created: " + booking);
         } catch (IllegalArgumentException | DateTimeException | IllegalStateException | ArrayIndexOutOfBoundsException e) {
             System.out.println("Booking failed: " + e.getMessage());
         }

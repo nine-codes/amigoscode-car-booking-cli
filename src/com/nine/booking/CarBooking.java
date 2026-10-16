@@ -5,6 +5,7 @@ import com.nine.user.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,8 +17,9 @@ public class CarBooking {
     private LocalDate endDate;
     private BookingStatus status;
     private BigDecimal price;
+    private LocalDateTime bookedAt;
 
-    public CarBooking(UUID id, User user, Car car, LocalDate startDate, LocalDate endDate, BookingStatus status, BigDecimal price) {
+    public CarBooking(UUID id, User user, Car car, LocalDate startDate, LocalDate endDate, BookingStatus status, BigDecimal price, LocalDateTime bookedAt) {
         this.id = id;
         this.user = user;
         this.car = car;
@@ -25,6 +27,7 @@ public class CarBooking {
         this.endDate = endDate;
         this.status = status;
         this.price = price;
+        this.bookedAt = bookedAt;
     }
 
     public UUID getId() {
@@ -51,6 +54,10 @@ public class CarBooking {
         return status;
     }
 
+    public LocalDateTime getBookedAt() {
+        return bookedAt;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -65,6 +72,7 @@ public class CarBooking {
                 ", endDate=" + endDate +
                 ", status=" + status +
                 ", price=" + price +
+                ", bookedAt=" + bookedAt +
                 '}';
     }
 
